@@ -15,14 +15,16 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'active'
+        'active',
+        'photo'
     ];
 
     protected $casts = [
         'name' => 'string',
         'description' => 'string',
         'price' => 'float',
-        'active' => 'boolean'
+        'active' => 'boolean',
+        'photo' => 'string'
     ];
 
 }
