@@ -1,6 +1,7 @@
 <h4 class="mb-3">Pago</h4>
 
-<form action="">
+<form action="{{ route('orders.checkout.store') }}" method="post">
+    @csrf
     <div class="my-3">
         <div class="form-check">
             <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
@@ -19,23 +20,23 @@
     <div class="row gy-3">
         <div class="col-md-6">
             <label for="cc-name" class="form-label">Nombre en la tarjeta</label>
-            <input type="text" class="form-control" id="cc-name" placeholder="" required>
+            <input type="text" class="form-control" id="cc-name" name="name" placeholder="" required>
             <small class="text-muted">Nombre completo como se muestra en la tarjeta</small>
         </div>
 
         <div class="col-md-6">
             <label for="cc-number" class="form-label">Número de tarjeta de crédito</label>
-            <input type="text" class="form-control" id="cc-number" placeholder="" required>
+            <input type="text" class="form-control" id="cc-number" name="number" placeholder="" required>
          </div>
 
         <div class="col-md-3">
             <label for="cc-expiration" class="form-label">Vencimiento</label>
-            <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+            <input type="text" class="form-control" id="cc-expiration" name="expiration" placeholder="" required>
         </div>
 
         <div class="col-md-3">
             <label for="cc-cvv" class="form-label">CVV</label>
-            <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+            <input type="text" class="form-control" id="cc-cvv" name="cvv" placeholder="" required>
         </div>
     </div>
 

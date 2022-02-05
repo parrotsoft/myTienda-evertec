@@ -38,6 +38,7 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         //
+        return view('pages.checkout-status');
     }
 
     /**

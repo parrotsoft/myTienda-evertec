@@ -23,3 +23,4 @@ Route::get('orders/create/{product_id}', [OrderController::class, 'create'])->na
 Route::post('orders/create', [OrderController::class, 'store'])->name('orders.store');
 
 Route::get('orders/checkout/{order_id}', [CheckoutController::class, 'create'])->name('orders.checkout.create');
+Route::post('orders/checkout', [CheckoutController::class, 'store'])->name('orders.checkout.store');
