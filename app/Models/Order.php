@@ -15,13 +15,24 @@ class Order extends Model
         'customer_name',
         'customer_email',
         'customer_mobile',
-        'status'
+        'status',
+        'product_id'
     ];
 
     protected $casts = [
         'customer_name' => 'string',
         'customer_email' => 'string',
         'customer_mobile' => 'string',
-        'status' => 'string'
+        'status' => 'string',
+        'product_id' => 'integer'
     ];
+
+    protected $with = [
+      'product'
+    ];
+
+    public function product()
+    {
+        return $this->hasOne(Product::class,'id','product_id');
+    }
 }

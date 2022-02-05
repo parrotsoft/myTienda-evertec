@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -38,6 +39,13 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $request->request->set('product_id', (int) $request->get('product_id'));
+            $order = Order::create($request->all());
+            return redirect()->route('orders.checkout.create', [$order]);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
