@@ -15,9 +15,11 @@
                     <span class="text-muted font-small d-block mb-2">Precio :</span>
                     <span class="h5 text-dark font-weight-bold">$ {{ number_format($product['price'], 2) }}</span>
                 </div>
+                @if($showBtnComprar)
                 <div class="col pr-0">
-                    <button class="btn btn-info btn-sm d-block mt-4 w-100">Comprar</button>
+                    <a class="btn btn-info btn-sm d-block mt-4 w-100" href="{{ route('orders.create', [$product['id']]) }}">Comprar</a>
                 </div>
+                @endif
             </div>
         </div>
     </div>
