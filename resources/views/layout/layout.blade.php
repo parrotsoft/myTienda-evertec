@@ -17,6 +17,8 @@
 
 @include("layout.parts.header")
 
+@yield("banner")
+
 @yield("main")
 
 
