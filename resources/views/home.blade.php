@@ -1,5 +1,9 @@
 @extends("layout.layout")
 
+@section("carousel")
+    @include("layout.parts.carousel")
+@stop
+
 @section("banner")
     @include("layout.parts.banner")
 @stop
