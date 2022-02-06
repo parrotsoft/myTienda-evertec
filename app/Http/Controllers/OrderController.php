@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\BaseRepo\Order\OrderRepositoryInterface;
 use App\BaseRepo\Product\ProductRepositoryInterface;
 use App\Http\Requests\StoreOrderRequest;
-use Illuminate\Http\Request;
+use Exception;
 
 class OrderController extends Controller
 {
@@ -21,7 +21,7 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -29,7 +29,7 @@ class OrderController extends Controller
         try {
             $orders = $this->orderRepository->all();
             return view('pages.orders-list', compact('orders'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
 
@@ -38,7 +38,7 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create($id)
     {
@@ -46,7 +46,7 @@ class OrderController extends Controller
         try {
             $product = $this->productRepository->find($id);
             return view('pages.order-create', compact('product'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
     }
@@ -55,7 +55,7 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreOrderRequest $request)
     {
@@ -64,7 +64,7 @@ class OrderController extends Controller
             $request->request->set('product_id', (int)$request->get('product_id'));
             $order = $this->orderRepository->create($request->all());
             return redirect()->route('orders.checkout.create', [$order]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
     }
