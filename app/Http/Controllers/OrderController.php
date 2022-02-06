@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BaseRepo\Order\OrderRepositoryInterface;
 use App\BaseRepo\Product\ProductRepositoryInterface;
+use App\Http\Requests\StoreOrderRequest;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -56,7 +57,7 @@ class OrderController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
         //
         try {
