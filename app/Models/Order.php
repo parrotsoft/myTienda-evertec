@@ -16,7 +16,8 @@ class Order extends Model
         'customer_email',
         'customer_mobile',
         'status',
-        'product_id'
+        'product_id',
+        'customer_address'
     ];
 
     protected $casts = [
@@ -24,7 +25,8 @@ class Order extends Model
         'customer_email' => 'string',
         'customer_mobile' => 'string',
         'status' => 'string',
-        'product_id' => 'integer'
+        'product_id' => 'integer',
+        'customer_address' => 'string'
     ];
 
     protected $with = [
