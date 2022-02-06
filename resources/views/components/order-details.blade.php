@@ -9,6 +9,6 @@
 </div>
 <div>
     <p class="mb-0 fw-bold text-secondary">Total</p>
-    <p class="mb-0">$30,000</p>
+    <p class="mb-0">${{ number_format($product['price'], 2) }}</p>
 </div>
 
