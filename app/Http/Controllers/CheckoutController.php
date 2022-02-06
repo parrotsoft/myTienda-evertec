@@ -2,39 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\PaymentProcess;
-use Dnetix\Redirection\PlacetoPay;
+use App\BaseRepo\Order\OrderRepositoryInterface;
+use App\BaseRepo\PaymentProcess\PaymentProcessRepositoryInsterface;
 use Illuminate\Http\Request;
-use function App\Helpers\getRequest;
+
 
 class CheckoutController extends Controller
 {
 
     protected $placetopay;
+    protected $orderRepository;
+    protected $paymentProcessRepository;
 
-    public function __construct()
+    public function __construct(OrderRepositoryInterface $orderRepository, PaymentProcessRepositoryInsterface $paymentProcessRepository)
     {
-        $this->placetopay = \App\Helpers\placetopay();
+        $this->placetopay = getPlacetopay();
+        $this->orderRepository = $orderRepository;
+        $this->paymentProcessRepository = $paymentProcessRepository;
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-        try {
-            $orders = Order::all();
-            return view('pages.orders-list', compact('orders'));
-        } catch (\Exception $e) {
-            abort(500, $e->getMessage());
-        }
-
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -45,7 +31,7 @@ class CheckoutController extends Controller
     {
         //
         try {
-            $order = Order::find($id);
+            $order = $this->orderRepository->find($id);
             return view('pages.checkout', compact('order'));
         } catch (\Exception $e) {
             abort(500, $e->getMessage());
@@ -56,19 +42,19 @@ class CheckoutController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         try {
             $orderId = $request->get('order_id');
-            $order = Order::find($orderId)->first();
-            $requestPlaceToPay = getRequest($order);
+            $order = $this->orderRepository->find($orderId);
+            $requestPlaceToPay = getRequestToPlacetopay($order);
 
             $response = $this->placetopay->request($requestPlaceToPay);
 
             if ($response->isSuccessful()) {
-                PaymentProcess::create([
+                $this->paymentProcessRepository->create([
                     'order_id' => $orderId,
                     'request_id' => $response->requestId(),
                     'process_url' => $response->processUrl(),
@@ -87,16 +73,16 @@ class CheckoutController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show($reference)
     {
         try {
-            $paymentProcess = PaymentProcess::where('reference', '=', $reference)->first();
+            $paymentProcess = $this->paymentProcessRepository->findByAttributes(['reference' => $reference]);
+
             if ($paymentProcess) {
                 $response = $this->placetopay->query($paymentProcess->request_id);
-
-                $order = Order::find($paymentProcess->order_id);
+                $order = $paymentProcess['order'];
 
                 if ($response->isSuccessful()) {
                     if ($response->status()->isApproved()) {
@@ -117,12 +103,12 @@ class CheckoutController extends Controller
                             $message = $response->status()->message();
                             $status = 3;
                             $processUrl = $paymentProcess->process_url;
-                            return view('pages.checkout-status', compact('status', 'order', 'message','processUrl'));
+                            return view('pages.checkout-status', compact('status', 'order', 'message', 'processUrl'));
                         }
                     }
                 } else {
                     // There was some error with the connection so check the message
-                    abort(500,$response->status()->message());
+                    abort(500, $response->status()->message());
                 }
             } else {
                 abort(404);
@@ -132,37 +118,4 @@ class CheckoutController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

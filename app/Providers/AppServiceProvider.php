@@ -14,6 +14,18 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->bind(
+            'App\BaseRepo\Order\OrderRepositoryInterface',
+            'App\BaseRepo\Order\OrderRepository'
+        );
+        $this->app->bind(
+            'App\BaseRepo\Product\ProductRepositoryInterface',
+            'App\BaseRepo\Product\ProductRepository'
+        );
+        $this->app->bind(
+            'App\BaseRepo\PaymentProcess\PaymentProcessRepositoryInsterface',
+            'App\BaseRepo\PaymentProcess\PaymentProcessRepository'
+        );
     }
 
     /**

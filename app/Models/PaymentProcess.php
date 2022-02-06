@@ -24,4 +24,13 @@ class PaymentProcess extends Model
         'process_url' => 'string',
         'reference' => 'string'
     ];
+
+    protected $with = [
+        'order'
+    ];
+
+    function order()
+    {
+        return $this->hasOne(Order::class,'id','order_id');
+    }
 }
