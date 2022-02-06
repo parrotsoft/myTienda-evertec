@@ -7,13 +7,11 @@
 @section('main')
     <section class="pt-5 pb-5">
         <div class="container">
-            <div class="row mb-md-2">
+            <div class="d-flex justify-content-center flex-wrap gap-3">
                 @foreach($products as $products)
-                    <div class="col-md-6 col-lg-4">
-                        @component("components.product-item", [ 'product' => $products, 'showBtnComprar' => true])
+                    @component("components.product-item", [ 'product' => $products, 'showBtnComprar' => true, 'fullWidth' => false])
 
-                        @endcomponent
-                    </div>
+                    @endcomponent
                 @endforeach
             </div>
         </div>
