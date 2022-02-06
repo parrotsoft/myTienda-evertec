@@ -1,5 +1,7 @@
 @extends("layout.layout")
 
+@section("title", 'Inicio')
+
 @section("carousel")
     @include("layout.parts.carousel")
 @stop

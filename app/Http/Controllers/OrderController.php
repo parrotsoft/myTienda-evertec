@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\Product;
+use App\BaseRepo\Order\OrderRepositoryInterface;
+use App\BaseRepo\Product\ProductRepositoryInterface;
+use App\Http\Requests\StoreOrderRequest;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    protected $orderRepository;
+    protected $productRepository;
+
+    public function __construct(OrderRepositoryInterface $orderRepository, ProductRepositoryInterface $productRepository)
+    {
+        $this->orderRepository = $orderRepository;
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +26,13 @@ class OrderController extends Controller
     public function index()
     {
         //
+        try {
+            $orders = $this->orderRepository->all();
+            return view('pages.orders-list', compact('orders'));
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+
     }
 
     /**
@@ -26,8 +43,12 @@ class OrderController extends Controller
     public function create($id)
     {
         //
-        $product = Product::find($id);
-        return view('pages.order-create', compact('product'));
+        try {
+            $product = $this->productRepository->find($id);
+            return view('pages.order-create', compact('product'));
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
     }
 
     /**
@@ -36,60 +57,16 @@ class OrderController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
         //
         try {
             $request->request->set('product_id', (int)$request->get('product_id'));
-            $order = Order::create($request->all());
+            $order = $this->orderRepository->create($request->all());
             return redirect()->route('orders.checkout.create', [$order]);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            abort(500, $e->getMessage());
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

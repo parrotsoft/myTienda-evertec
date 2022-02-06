@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Helpers;
-
 use App\Models\Order;
 use Dnetix\Redirection\PlacetoPay;
 
-function placetopay()
+function getPlacetopay()
 {
     return new PlacetoPay([
         'login' => env('P2P_LOGIN', '6dd490faf9cb87a9862245da41170ff2'),
@@ -14,11 +12,12 @@ function placetopay()
     ]);
 }
 
-function getRequest(Order $order)
+function getRequestToPlacetopay(Order $order)
 {
+    $reference =  'ORDER_'. time();
     return [
         'payment' => [
-            'reference' => $order->id,
+            'reference' => $reference,
             'description' => $order->product->name,
             'amount' => [
                 'currency' => 'COP',
@@ -26,9 +25,9 @@ function getRequest(Order $order)
             ],
         ],
         'expiration' => date('c', strtotime(' + 2 days')),
-        'returnUrl' => 'http://localhost:8000/orders/checkout/status/' . $order->id,
+        'returnUrl' => 'http://localhost:8000/orders/checkout/status/' . $reference,
         'ipAddress' => '127.0.0.1',
-        'cancelUrl' => 'http://localhost:8000',
+        'cancelUrl' => 'http://localhost:8000/orders/checkout/status/' . $reference,
         'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
     ];
 }

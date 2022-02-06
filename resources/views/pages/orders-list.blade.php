@@ -1,5 +1,7 @@
 @extends("layout.layout")
 
+@section("title", 'Lista de ordenes')
+
 @section('main')
 
     <table class="table">

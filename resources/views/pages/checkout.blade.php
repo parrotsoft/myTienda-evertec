@@ -1,6 +1,16 @@
 @extends("layout.layout")
 
+@section("title", 'Detalles de la orden')
+
 @section('main')
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route("home") }}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Nueva orden</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detalles de la orden</li>
+        </ol>
+    </nav>
 
     <form action="{{ route("orders.checkout.store") }}" method="post">
         @csrf

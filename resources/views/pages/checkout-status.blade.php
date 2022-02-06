@@ -1,5 +1,7 @@
 @extends("layout.layout")
 
+@section("title", 'Estado de su pago')
+
 @section('main')
 
     @if($status === 1)
