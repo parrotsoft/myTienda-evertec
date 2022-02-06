@@ -14,12 +14,14 @@ class PaymentProcess extends Model
     protected $fillable = [
         'order_id',
         'request_id',
-        'process_url'
+        'process_url',
+        'reference'
     ];
 
     protected $casts = [
         'order_id' => 'integer',
         'request_id' => 'integer',
-        'process_url' => 'string'
+        'process_url' => 'string',
+        'reference' => 'string'
     ];
 }

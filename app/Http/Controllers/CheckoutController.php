@@ -10,6 +10,15 @@ use function App\Helpers\getRequest;
 
 class CheckoutController extends Controller
 {
+
+    protected $placetopay;
+
+    public function __construct()
+    {
+        $this->placetopay = \App\Helpers\placetopay();
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -52,19 +61,18 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         try {
-            $placetopay = \App\Helpers\placetopay();
-
-            $reference = $request->get('order_id');
-            $order = Order::find($reference)->first();
+            $orderId = $request->get('order_id');
+            $order = Order::find($orderId)->first();
             $requestPlaceToPay = getRequest($order);
 
-            $response = $placetopay->request($requestPlaceToPay);
+            $response = $this->placetopay->request($requestPlaceToPay);
 
             if ($response->isSuccessful()) {
                 PaymentProcess::create([
-                    'order_id' => $reference,
+                    'order_id' => $orderId,
                     'request_id' => $response->requestId(),
                     'process_url' => $response->processUrl(),
+                    'reference' => $requestPlaceToPay['payment']['reference']
                 ]);
                 return redirect()->away($response->processUrl());
             } else {
@@ -81,14 +89,14 @@ class CheckoutController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($reference)
     {
         try {
-            $paymentProcess = PaymentProcess::where('order_id', '=', $id)->first();
+            $paymentProcess = PaymentProcess::where('reference', '=', $reference)->first();
             if ($paymentProcess) {
-                $placetopay = \App\Helpers\placetopay();
-                $response = $placetopay->query($paymentProcess->request_id);
-                $order = Order::find($id);
+                $response = $this->placetopay->query($paymentProcess->request_id);
+
+                $order = Order::find($paymentProcess->order_id);
 
                 if ($response->isSuccessful()) {
                     if ($response->status()->isApproved()) {
@@ -108,13 +116,13 @@ class CheckoutController extends Controller
                             // Is pending so make a query for it later (see information.php example)
                             $message = $response->status()->message();
                             $status = 3;
-                            return view('pages.checkout-status', compact('status', 'order', 'message'));
-                            // print_r($paymentProcess->request_id . " PAYMENT PENDING\n");
+                            $processUrl = $paymentProcess->process_url;
+                            return view('pages.checkout-status', compact('status', 'order', 'message','processUrl'));
                         }
                     }
                 } else {
                     // There was some error with the connection so check the message
-                    print_r($response->status()->message() . "\n");
+                    abort(500,$response->status()->message());
                 }
             } else {
                 abort(404);
