@@ -26,8 +26,12 @@ class OrderController extends Controller
     public function create($id)
     {
         //
-        $product = Product::find($id);
-        return view('pages.order-create', compact('product'));
+        try {
+            $product = Product::find($id);
+            return view('pages.order-create', compact('product'));
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
     }
 
     /**
@@ -44,7 +48,7 @@ class OrderController extends Controller
             $order = Order::create($request->all());
             return redirect()->route('orders.checkout.create', [$order]);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            abort(500, $e->getMessage());
         }
     }
 

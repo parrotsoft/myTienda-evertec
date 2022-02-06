@@ -20,7 +20,7 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->name,
             'description' => $this->faker->text(50),
-            'price' => $this->faker->numberBetween($min = 1000, $max = 100000),
+            'price' => $this->faker->numberBetween($min = 10000, $max = 100000),
             'active' => true,
             'photo' => $this->faker->imageUrl($width = 500, $height = 350)
         ];
