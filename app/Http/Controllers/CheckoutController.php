@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\BaseRepo\Checkout\CheckoutRepository;
+use App\BaseRepo\Checkout\PayStatusFactory;
 use App\BaseRepo\Order\OrderRepositoryInterface;
 use App\BaseRepo\PaymentProcess\PaymentProcessRepositoryInsterface;
+use Exception;
 use Illuminate\Http\Request;
 
 
@@ -25,7 +28,7 @@ class CheckoutController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create($id)
     {
@@ -33,7 +36,7 @@ class CheckoutController extends Controller
         try {
             $order = $this->orderRepository->find($id);
             return view('pages.checkout', compact('order'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
     }
@@ -50,21 +53,17 @@ class CheckoutController extends Controller
             $orderId = $request->get('order_id');
             $order = $this->orderRepository->find($orderId);
             $requestPlaceToPay = getRequestToPlacetopay($order);
-
+            $reference = $requestPlaceToPay['payment']['reference'];
             $response = $this->placetopay->request($requestPlaceToPay);
 
             if ($response->isSuccessful()) {
-                $this->paymentProcessRepository->create([
-                    'order_id' => $orderId,
-                    'request_id' => $response->requestId(),
-                    'process_url' => $response->processUrl(),
-                    'reference' => $requestPlaceToPay['payment']['reference']
-                ]);
-                return redirect()->away($response->processUrl());
+                if ((new CheckoutRepository($this->paymentProcessRepository))->storePaymentProcess($orderId, $response, $reference)) {
+                    return redirect()->away($response->processUrl());
+                }
             } else {
                 abort(400, $response->status()->message());
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
     }
@@ -73,7 +72,7 @@ class CheckoutController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return PayStatusFactory|\App\BaseRepo\Checkout\PayStatusPending|\App\BaseRepo\Checkout\PayStatusRejected|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($reference)
     {
@@ -85,35 +84,14 @@ class CheckoutController extends Controller
                 $order = $paymentProcess['order'];
 
                 if ($response->isSuccessful()) {
-                    if ($response->status()->isApproved()) {
-                        $status = 1;
-                        $order->status = 'PAYED';
-                        $order->save();
-                        return view('pages.checkout-status', compact('status', 'order'));
-                    } else {
-                        if ($response->status()->isRejected()) {
-                            $status = 2;
-                            $order->status = 'REJECTED';
-                            $order->save();
-                            $message = $response->status()->message();
-                            $processUrl = $paymentProcess->process_url;
-                            return view('pages.checkout-status', compact('status', 'order', 'message', 'processUrl'));
-                        } else {
-                            // Is pending so make a query for it later (see information.php example)
-                            $message = $response->status()->message();
-                            $status = 3;
-                            $processUrl = $paymentProcess->process_url;
-                            return view('pages.checkout-status', compact('status', 'order', 'message', 'processUrl'));
-                        }
-                    }
+                    return (new PayStatusFactory())->initialize($response->status(), $order, $response, $paymentProcess);
                 } else {
-                    // There was some error with the connection so check the message
                     abort(500, $response->status()->message());
                 }
             } else {
                 abort(404);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
     }
