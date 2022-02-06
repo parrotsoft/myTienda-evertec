@@ -6,5 +6,4 @@
         </a>
         @include("layout.parts.navbar")
     </div>
-    @include("layout.parts.carousel")
 </header>

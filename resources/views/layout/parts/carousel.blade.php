@@ -1,14 +1,16 @@
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="{{ url('/images/banners/banner1.jpg') }}" class="d-block w-100" alt="...">
+            <img src="{{ url("/images/banners/banner1.jpg") }}" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-            <img src="{{ url('/images/banners/banner2.jpg') }}" class="d-block w-100" alt="...">
+            <img src="{{ url("/images/banners/banner2.jpg") }}" class="d-block w-100" alt="...">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
