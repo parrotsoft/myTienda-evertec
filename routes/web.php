@@ -20,10 +20,13 @@ use App\Http\Controllers\CheckoutController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('orders/create/{product_id}', [OrderController::class, 'create'])->name('orders.create');
-Route::get('orders/checkout/{order_id}', [CheckoutController::class, 'create'])->name('orders.checkout.create');
-Route::get('orders/checkout/status/{id}', [CheckoutController::class, 'show']);
-Route::get('orders/list', [OrderController::class, 'index'])->name('orders.list');
-Route::post('orders/checkout', [CheckoutController::class, 'store'])->name('orders.checkout.store');
-Route::post('orders/create', [OrderController::class, 'store'])->name('orders.store');
+Route::group(['prefix' => 'orders'], function () {
+    Route::get('create/{product_id}', [OrderController::class, 'create'])->name('orders.create');
+    Route::get('checkout/{order_id}', [CheckoutController::class, 'create'])->name('orders.checkout.create');
+    Route::get('checkout/status/{id}', [CheckoutController::class, 'show']);
+    Route::get('list', [OrderController::class, 'index'])->name('orders.list');
+    Route::post('checkout', [CheckoutController::class, 'store'])->name('orders.checkout.store');
+    Route::post('create', [OrderController::class, 'store'])->name('orders.store');
+});
+
 
