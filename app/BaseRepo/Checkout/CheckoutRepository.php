@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @description Class to store the Payment Process
+ */
+
 namespace App\BaseRepo\Checkout;
 
 use App\BaseRepo\PaymentProcess\PaymentProcessRepositoryInsterface;

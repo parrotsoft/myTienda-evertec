@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @description Class for the management of pending payments
+ */
+
 namespace App\BaseRepo\Checkout\PayStatus;
 
 class PayStatusPending implements PayStatusInterface

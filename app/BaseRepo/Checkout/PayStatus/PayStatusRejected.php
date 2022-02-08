@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @description Class for the management of rejected payments
+ */
+
 namespace App\BaseRepo\Checkout\PayStatus;
 
 class PayStatusRejected implements PayStatusInterface

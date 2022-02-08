@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @description Basic operations interface for models
+ */
+
 namespace App\BaseRepo\Base;
 
 interface RepositoryInterface

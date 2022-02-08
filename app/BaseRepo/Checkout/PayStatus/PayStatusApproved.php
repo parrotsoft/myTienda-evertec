@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @description Class for the management of successful payments
+ */
+
 namespace App\BaseRepo\Checkout\PayStatus;
 
 class PayStatusApproved implements PayStatusInterface

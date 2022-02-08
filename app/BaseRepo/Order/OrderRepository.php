@@ -38,10 +38,10 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function find($id)
     {
-        if (null == $post = $this->model->find($id)) {
+        if (null == $order = $this->model->find($id)) {
             throw new ModelNotFoundException("Order not found");
         }
 
-        return $post;
+        return $order;
     }
 }
