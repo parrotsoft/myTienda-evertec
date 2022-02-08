@@ -11,9 +11,9 @@ use Dnetix\Redirection\PlacetoPay;
 function getPlacetopay(): PlacetoPay
 {
     return new PlacetoPay([
-        'login' => env('P2P_LOGIN', '6dd490faf9cb87a9862245da41170ff2'),
-        'tranKey' => env('P2P_TRANKEY', '024h1IlD'),
-        'baseUrl' => env('P2P_URL', 'https://dev.placetopay.com/redirection/')
+        'login' => env('P2P_LOGIN'),
+        'tranKey' => env('P2P_TRANKEY'),
+        'baseUrl' => env('P2P_URL')
     ]);
 }
 
