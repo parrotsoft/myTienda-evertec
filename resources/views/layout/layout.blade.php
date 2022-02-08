@@ -10,6 +10,20 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 
+    @yield("style")
+
+    <style type="text/css">
+        .active-route {
+            border: 1px solid #2d3748;
+            padding: 1em;
+            border-radius: 1em;
+        }
+        .status {
+            height: 250px;
+            color: white;
+        }
+    </style>
+
 </head>
 <body class="container">
 
