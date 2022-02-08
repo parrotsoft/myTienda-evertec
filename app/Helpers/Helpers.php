@@ -3,7 +3,12 @@
 use App\Models\Order;
 use Dnetix\Redirection\PlacetoPay;
 
-function getPlacetopay()
+/**
+ * @description return instance of PlacetoPay
+ * @return PlacetoPay
+ */
+
+function getPlacetopay(): PlacetoPay
 {
     return new PlacetoPay([
         'login' => env('P2P_LOGIN', '6dd490faf9cb87a9862245da41170ff2'),
@@ -12,7 +17,13 @@ function getPlacetopay()
     ]);
 }
 
-function getRequestToPlacetopay(Order $order)
+/**
+ * @description return request to Placetopay
+ * @param Order $order
+ * @return array
+ */
+
+function getRequestToPlacetopay(Order $order): array
 {
     $reference =  'ORDER_'. time();
     return [
@@ -25,9 +36,9 @@ function getRequestToPlacetopay(Order $order)
             ],
         ],
         'expiration' => date('c', strtotime(' + 2 days')),
-        'returnUrl' => 'http://localhost:8000/orders/checkout/status/' . $reference,
+        'returnUrl' => env('APP_URL').'/orders/checkout/status/' . $reference,
         'ipAddress' => '127.0.0.1',
-        'cancelUrl' => 'http://localhost:8000/orders/checkout/status/' . $reference,
+        'cancelUrl' => env('APP_URL').'/orders/checkout/status/' . $reference,
         'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
     ];
 }

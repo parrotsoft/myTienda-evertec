@@ -5,10 +5,3 @@
        href="{{ route("orders.list") }}">Compras</a>
 </nav>
 
-<style>
-    .active-route {
-        border: 1px solid #2d3748;
-        padding: 1em;
-        border-radius: 1em;
-    }
-</style>

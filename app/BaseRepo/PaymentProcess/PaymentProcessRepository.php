@@ -38,11 +38,11 @@ class PaymentProcessRepository implements PaymentProcessRepositoryInsterface
 
     public function find($id)
     {
-        if (null == $post = $this->model->find($id)) {
+        if (null == $paymentProcess = $this->model->find($id)) {
             throw new ModelNotFoundException("Product not found");
         }
 
-        return $post;
+        return $paymentProcess;
     }
 
     public function findByAttributes(array $attributes)

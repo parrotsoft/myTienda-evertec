@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @description Factory to abstract the result of a payment
+ */
+
 namespace App\BaseRepo\Checkout;
 
 use App\BaseRepo\Checkout\PayStatus\PayStatusApproved;

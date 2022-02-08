@@ -21,10 +21,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    .status {
-        height: 250px;
-        color: white;
-    }
-</style>

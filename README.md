@@ -17,6 +17,8 @@ Environment:
   - P2P_LOGIN 
   - P2P_TRANKEY 
   - P2P_URL
+  - APP_URL 
+  - IP_ADDRESS
 
 Pattern:
 * Base Repository
@@ -26,6 +28,8 @@ Pattern:
 
 Deployment:
 * php artisan migrate:refresh --seed
+* php artisan test
+* php artisan serve
 
 
 
