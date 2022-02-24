@@ -15,7 +15,7 @@ class AddReferenceToPaymentProcessTable extends Migration
     {
         Schema::table('payment_process', function (Blueprint $table) {
             //
-            $table->string('reference')->unique();
+            $table->string('reference')->unique()->nullable();
         });
     }
 
