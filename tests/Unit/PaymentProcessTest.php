@@ -13,16 +13,34 @@ class PaymentProcessTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_a_payment_process_has_one_order()
-    {
-        Product::factory()->count(1)->create();
-        $product = Product::first();
+    protected $product;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        Product::factory()->count(1)->create();
+        $this->product = Product::first();
+    }
+
+    public function test_create_order()
+    {
         $order = Order::create([
             'customer_name' => 'Miguel Lopez A',
             'customer_email' => 'lopezarizamiguel@gmail.com',
             'customer_mobile' => '3015575931',
-            'product_id' => $product->id,
+            'product_id' => $this->product->id,
+            'customer_address' => 'Carrera 9D # 124-248 Torre 5 Apt 805'
+        ]);
+        $this->assertInstanceOf(Order::class, $order);
+    }
+
+    public function test_a_payment_process_has_one_order()
+    {
+        $order = Order::create([
+            'customer_name' => 'Miguel Lopez A',
+            'customer_email' => 'lopezarizamiguel@gmail.com',
+            'customer_mobile' => '3015575931',
+            'product_id' => $this->product->id,
             'customer_address' => 'Carrera 9D # 124-248 Torre 5 Apt 805'
         ]);
 
