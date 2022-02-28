@@ -10,29 +10,30 @@ class ProductTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_store()
+    protected $product;
+
+    public function setUp(): void
     {
-        Product::create([
+        parent::setUp();
+        $this->product = Product::create([
             'name' => 'test',
             'description' => 'test',
             'price' => 10000,
             'active' => true,
             'photo' => ''
         ]);
+
+    }
+
+    public function test_store()
+    {
         $products = Product::all();
         $this->assertCount(1, $products);
     }
 
     public function test_delete()
     {
-        $product = Product::create([
-            'name' => 'test',
-            'description' => 'test',
-            'price' => 10000,
-            'active' => true,
-            'photo' => ''
-        ]);
-        Product::destroy($product->id);
+        Product::destroy($this->product->id);
         $products = Product::all();
         $this->assertCount(0, $products);
     }
