@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BaseRepo\Checkout\CheckoutRepository;
-use App\BaseRepo\Checkout\PayStatusFactory;
+use App\BaseRepo\Checkout\PayStatus;
 use App\BaseRepo\Order\OrderRepositoryInterface;
 use App\BaseRepo\PaymentProcess\PaymentProcessRepositoryInsterface;
 use Exception;
@@ -17,8 +17,10 @@ class CheckoutController extends Controller
     protected $orderRepository;
     protected $paymentProcessRepository;
 
-    public function __construct(OrderRepositoryInterface $orderRepository, PaymentProcessRepositoryInsterface $paymentProcessRepository)
-    {
+    public function __construct(
+        OrderRepositoryInterface $orderRepository,
+        PaymentProcessRepositoryInsterface $paymentProcessRepository
+    ) {
         $this->placetopay = getPlacetopay();
         $this->orderRepository = $orderRepository;
         $this->paymentProcessRepository = $paymentProcessRepository;
@@ -57,7 +59,8 @@ class CheckoutController extends Controller
             $response = $this->placetopay->request($requestPlaceToPay);
 
             if ($response->isSuccessful()) {
-                if ((new CheckoutRepository($this->paymentProcessRepository))->storePaymentProcess($orderId, $response, $reference)) {
+                if ((new CheckoutRepository($this->paymentProcessRepository))->storePaymentProcess($orderId, $response,
+                    $reference)) {
                     return redirect()->away($response->processUrl());
                 }
             } else {
@@ -72,7 +75,7 @@ class CheckoutController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return PayStatusFactory|\App\BaseRepo\Checkout\PayStatusPending|\App\BaseRepo\Checkout\PayStatusRejected|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return PayStatus|\App\BaseRepo\Checkout\PayStatusPending|\App\BaseRepo\Checkout\PayStatusRejected|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($reference)
     {
@@ -84,7 +87,7 @@ class CheckoutController extends Controller
                 $order = $paymentProcess['order'];
 
                 if ($response->isSuccessful()) {
-                    return (new PayStatusFactory())->initialize($response->status(), $order, $response, $paymentProcess);
+                    return (new PayStatus())->initialize($response->status(), $order, $response, $paymentProcess);
                 } else {
                     abort(500, $response->status()->message());
                 }
