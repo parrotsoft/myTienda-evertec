@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class CheckoutController extends Controller
 {
 
-    protected $placetopay;
+    protected $placeToPay;
     protected $orderRepository;
     protected $paymentProcessRepository;
 
@@ -21,7 +21,7 @@ class CheckoutController extends Controller
         OrderRepositoryInterface $orderRepository,
         PaymentProcessRepositoryInsterface $paymentProcessRepository
     ) {
-        $this->placetopay = getPlacetopay();
+        $this->placeToPay = getPlacetopay();
         $this->orderRepository = $orderRepository;
         $this->paymentProcessRepository = $paymentProcessRepository;
     }
@@ -56,7 +56,7 @@ class CheckoutController extends Controller
             $order = $this->orderRepository->find($orderId);
             $requestPlaceToPay = getRequestToPlacetopay($order);
             $reference = $requestPlaceToPay['payment']['reference'];
-            $response = $this->placetopay->request($requestPlaceToPay);
+            $response = $this->placeToPay->request($requestPlaceToPay);
 
             if ($response->isSuccessful()) {
                 if ((new CheckoutRepository($this->paymentProcessRepository))->storePaymentProcess($orderId, $response,
@@ -83,7 +83,7 @@ class CheckoutController extends Controller
             $paymentProcess = $this->paymentProcessRepository->findByAttributes(['reference' => $reference]);
 
             if ($paymentProcess) {
-                $response = $this->placetopay->query($paymentProcess->request_id);
+                $response = $this->placeToPay->query($paymentProcess->request_id);
                 $order = $paymentProcess['order'];
 
                 if ($response->isSuccessful()) {
