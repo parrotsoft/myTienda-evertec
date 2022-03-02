@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\BaseRepo\Product\ProductRepositoryInterface;
+
 
 class HomeController extends Controller
 {
+    protected $productRepository;
+
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     public function index()
     {
-        $products = Product::all();
+        $products = $this->productRepository->all();
         return view('home', compact('products'));
     }
 }
