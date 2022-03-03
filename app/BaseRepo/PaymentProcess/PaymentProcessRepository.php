@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PaymentProcessRepository implements PaymentProcessRepositoryInsterface
 {
+
     protected $model;
 
     public function __construct(PaymentProcess $paymentProcess)
@@ -49,7 +50,7 @@ class PaymentProcessRepository implements PaymentProcessRepositoryInsterface
         try {
             $query = $this->buildQueryByAttributes($attributes);
             return $query->first();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -65,4 +66,5 @@ class PaymentProcessRepository implements PaymentProcessRepositoryInsterface
         }
         return $query;
     }
+
 }

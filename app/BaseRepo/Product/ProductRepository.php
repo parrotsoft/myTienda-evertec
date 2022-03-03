@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductRepository implements ProductRepositoryInterface
 {
+
     protected $model;
 
     public function __construct(Product $product)
