@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderRepository implements OrderRepositoryInterface
 {
-
     protected $model;
 
     public function __construct(Order $order)
