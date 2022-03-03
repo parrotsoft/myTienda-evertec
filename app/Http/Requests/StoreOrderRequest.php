@@ -25,8 +25,8 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'customer_name' => 'required|max:255',
-            'customer_email' => 'required',
-            'customer_mobile' => 'required'
+            'customer_email' => 'required|email|max:255',
+            'customer_mobile' => 'required|max:255'
         ];
     }
 

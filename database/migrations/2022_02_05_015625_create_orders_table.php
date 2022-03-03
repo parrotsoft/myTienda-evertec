@@ -15,10 +15,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('customer_name');
-            $table->string('customer_email');
-            $table->string('customer_mobile');
-            $table->enum('status', ['CREATED','PAYED','REJECTED'])->default('CREATED');
+            $table->string('customer_name', 250);
+            $table->string('customer_email', 250);
+            $table->string('customer_mobile', 250);
+            $table->enum('status', ['CREATED', 'PAYED', 'REJECTED'])->default('CREATED');
             $table->timestamps();
         });
     }
