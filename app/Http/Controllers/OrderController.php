@@ -6,6 +6,7 @@ use App\BaseRepo\Order\OrderRepositoryInterface;
 use App\BaseRepo\Product\ProductRepositoryInterface;
 use App\Http\Requests\StoreOrderRequest;
 use Exception;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -25,12 +26,13 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         try {
-            $orders = $this->orderRepository->all();
-            return view('pages.orders-list', compact('orders'));
+            $date = $request->get('date') ? $request->get('date') : date('Y-m-d');
+            $orders = $date ? $this->orderRepository->findByCreted($date) : $this->orderRepository->all();
+            return view('pages.orders-list', compact('orders', 'date'));
         } catch (Exception $e) {
             abort(500, $e->getMessage());
         }

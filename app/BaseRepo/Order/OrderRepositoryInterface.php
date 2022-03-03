@@ -10,5 +10,5 @@ use App\BaseRepo\Base\RepositoryInterface;
 
 interface OrderRepositoryInterface extends RepositoryInterface
 {
-
+    public function findByCreted($date);
 }
