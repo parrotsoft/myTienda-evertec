@@ -22,7 +22,6 @@ class ProductTest extends TestCase
             'active' => true,
             'photo' => ''
         ]);
-
     }
 
     public function test_store()

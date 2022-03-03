@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +9,6 @@ use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
-
     use RefreshDatabase;
 
     protected $product;

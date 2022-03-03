@@ -4,6 +4,15 @@
 
 @section('main')
 
+    <form action="{{ route('orders.list') }}" class="row g-3">
+        <div class="col-2">
+            <input type="date" name="date" id="" class="form-control" value="{{ $date? $date : '' }}">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary btn-sm">Buscar</button>
+        </div>
+    </form>
+
     <table class="table">
         <thead>
         <tr>

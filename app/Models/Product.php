@@ -26,5 +26,4 @@ class Product extends Model
         'active' => 'boolean',
         'photo' => 'string'
     ];
-
 }

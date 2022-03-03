@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderRepository implements OrderRepositoryInterface
 {
-
     protected $model;
 
     public function __construct(Order $order)
@@ -43,5 +42,11 @@ class OrderRepository implements OrderRepositoryInterface
         }
 
         return $order;
+    }
+
+
+    public function findByCreted($date)
+    {
+        return $this->model->where('created_at', '>=', $date . ' 00:00:00')->get();
     }
 }

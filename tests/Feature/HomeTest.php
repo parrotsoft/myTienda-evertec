@@ -32,5 +32,4 @@ class HomeTest extends TestCase
             ->assertOk();
         $response->assertViewHas('products', $this->products);
     }
-
 }

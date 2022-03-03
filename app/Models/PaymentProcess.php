@@ -29,8 +29,8 @@ class PaymentProcess extends Model
         'order'
     ];
 
-    function order()
+    public function order()
     {
-        return $this->hasOne(Order::class,'id','order_id');
+        return $this->hasOne(Order::class, 'id', 'order_id');
     }
 }

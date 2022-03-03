@@ -28,5 +28,3 @@ Route::group(['prefix' => 'orders'], function () {
     Route::post('checkout', [CheckoutController::class, 'store'])->name('orders.checkout.store');
     Route::post('create', [OrderController::class, 'store'])->name('orders.store');
 });
-
-

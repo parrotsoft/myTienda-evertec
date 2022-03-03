@@ -8,7 +8,6 @@ namespace App\BaseRepo\Checkout\PayStatus;
 
 class PayStatusRejected implements PayStatusInterface
 {
-
     public function validate($order, $response, $paymentProcess)
     {
         $status = 2;
