@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\BaseRepo\Product\ProductRepositoryInterface;
 
-
 class HomeController extends Controller
 {
     protected $productRepository;

@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->string('customer_name');
             $table->string('customer_email');
             $table->string('customer_mobile');
-            $table->enum('status',['CREATED','PAYED','REJECTED'])->default('CREATED');
+            $table->enum('status', ['CREATED','PAYED','REJECTED'])->default('CREATED');
             $table->timestamps();
         });
     }

@@ -9,10 +9,8 @@ use App\BaseRepo\PaymentProcess\PaymentProcessRepositoryInsterface;
 use Exception;
 use Illuminate\Http\Request;
 
-
 class CheckoutController extends Controller
 {
-
     protected $placeToPay;
     protected $orderRepository;
     protected $paymentProcessRepository;
@@ -59,8 +57,11 @@ class CheckoutController extends Controller
             $response = $this->placeToPay->request($requestPlaceToPay);
 
             if ($response->isSuccessful()) {
-                if ((new CheckoutRepository($this->paymentProcessRepository))->storePaymentProcess($orderId, $response,
-                    $reference)) {
+                if ((new CheckoutRepository($this->paymentProcessRepository))->storePaymentProcess(
+                    $orderId,
+                    $response,
+                    $reference
+                )) {
                     return redirect()->away($response->processUrl());
                 }
             } else {
@@ -98,5 +99,4 @@ class CheckoutController extends Controller
             abort(500, $e->getMessage());
         }
     }
-
 }

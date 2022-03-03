@@ -36,7 +36,6 @@ class OrderController extends Controller
         } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
-
     }
 
     /**
@@ -72,5 +71,4 @@ class OrderController extends Controller
             abort(500, $e->getMessage());
         }
     }
-
 }
