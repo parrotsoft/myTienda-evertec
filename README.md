@@ -10,28 +10,35 @@
 ## MyTienda-Evertec
 
 Environment:
+
 - PHP 7.4.19
 - MySQL 5.7.33
 
 - Project (.env)
-  - P2P_LOGIN 
-  - P2P_TRANKEY 
-  - P2P_URL
-  - APP_URL 
-  - IP_ADDRESS
+    - P2P_LOGIN
+    - P2P_TRANKEY
+    - P2P_URL
+    - APP_URL
+    - IP_ADDRESS
 
 Pattern:
+
 * Base Repository
 * SOLID
-  * Single Responsibility Principle
-  * Open/closed principle
+    * Single Responsibility Principle
+    * Open/closed principle
 
 Deployment:
+
 * php artisan migrate:refresh --seed
 * php artisan test
 * php artisan serve
 
+Coverage and php-cs-fixer
 
+* vendor/bin/phpunit --coverage-html reports
+* tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src
 
 ## License
+
 [MIT license](https://opensource.org/licenses/MIT).
