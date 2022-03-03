@@ -63,7 +63,5 @@ class OrderCheckoutTest extends TestCase
         $response = $this->get('/orders/checkout/' . $order->id)
             ->assertOk();
         $response->assertViewHas('order', $order);
-
     }
-
 }
