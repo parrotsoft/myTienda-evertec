@@ -34,7 +34,10 @@
                 <td>{{ $order->customer_mobile }}</td>
                 <td>{{ $order->customer_address }}</td>
                 <td>{{ $order->updated_at }}</td>
-                <td>{{ $order->status }}</td>
+                <td>
+                    {{ $order->status }}
+                    {!! getUrlStatusVerify($order) !!}
+                </td>
             </tr>
         @endforeach
         </tbody>

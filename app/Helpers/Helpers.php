@@ -42,3 +42,11 @@ function getRequestToPlacetopay(Order $order): array
         'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
     ];
 }
+
+
+function getUrlStatusVerify(Order $order)
+{
+    if ($order->status == 'CREATED') {
+        return "<a target='_black' class='btn btn-info btn-sm ml-1' href='".$order->paymentProcess->process_url."'>Consultar</a>";
+    }
+}
