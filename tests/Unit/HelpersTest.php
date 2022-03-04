@@ -37,4 +37,19 @@ class HelpersTest extends TestCase
         $this->assertArrayHasKey('cancelUrl', $requer_p2p);
         $this->assertArrayHasKey('userAgent', $requer_p2p);
     }
+
+    public function test_get_btn_consultar_sale()
+    {
+        $order = Order::create([
+            'customer_name' => 'Miguel Lopez A',
+            'customer_email' => 'lopezarizamiguel@gmail.com',
+            'customer_mobile' => '3015575931',
+            'product_id' => $this->product->id,
+            'customer_address' => 'Carrera 9D # 124-248 Torre 5 Apt 805',
+            'status' => 'CREATED'
+        ]);
+        $order['paymentProcess']['process_url'] = 'https://';
+        $response = getUrlStatusVerify($order);
+        $this->assertContains('<a', $response);
+    }
 }

@@ -46,7 +46,7 @@ function getRequestToPlacetopay(Order $order): array
 
 function getUrlStatusVerify(Order $order)
 {
-    if ($order->status == 'CREATED') {
+    if ($order->status == 'CREATED' && $order->paymentProcess) {
         return "<a target='_black' class='btn btn-info btn-sm ml-1' href='".$order->paymentProcess->process_url."'>Consultar</a>";
     }
 }
