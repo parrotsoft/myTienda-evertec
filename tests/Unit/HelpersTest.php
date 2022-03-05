@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\BaseRepo\Order\OrderRepository;
 use App\Models\Order;
+use App\Models\PaymentProcess;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -40,6 +42,9 @@ class HelpersTest extends TestCase
 
     public function test_get_btn_consultar_sale()
     {
-        $this->assertTrue(true);
+        Order::factory(1)->create();
+        PaymentProcess::factory(1)->create();
+        $order = (new OrderRepository(new Order()))->find(1);
+        $this->assertStringContainsString('<a', getUrlStatusVerify($order));
     }
 }
