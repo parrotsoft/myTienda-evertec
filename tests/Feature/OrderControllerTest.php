@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class OrderControllerTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function test_function_index()
@@ -16,5 +15,4 @@ class OrderControllerTest extends TestCase
         $responser = $this->get(route('orders.list'));
         $responser->assertOk();
     }
-
 }

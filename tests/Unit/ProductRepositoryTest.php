@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class ProductRepositoryTest extends TestCase
 {
     use RefreshDatabase;
@@ -23,7 +22,7 @@ class ProductRepositoryTest extends TestCase
     public function test_delete_product()
     {
         Product::factory(1)->create();
-        $this->assertEquals(1,$this->product->delete(1));
+        $this->assertEquals(1, $this->product->delete(1));
     }
 
     public function test_find_exception()
