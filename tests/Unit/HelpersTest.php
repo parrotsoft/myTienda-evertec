@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\BaseRepo\Order\OrderRepository;
 use App\Models\Order;
+use App\Models\PaymentProcess;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -36,5 +38,13 @@ class HelpersTest extends TestCase
         $this->assertArrayHasKey('ipAddress', $requer_p2p);
         $this->assertArrayHasKey('cancelUrl', $requer_p2p);
         $this->assertArrayHasKey('userAgent', $requer_p2p);
+    }
+
+    public function test_get_btn_consultar_sale()
+    {
+        Order::factory(1)->create();
+        PaymentProcess::factory(1)->create();
+        $order = (new OrderRepository(new Order()))->find(1);
+        $this->assertStringContainsString('<a', getUrlStatusVerify($order));
     }
 }

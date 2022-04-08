@@ -30,11 +30,18 @@ class Order extends Model
     ];
 
     protected $with = [
-        'product'
+        'product',
+        'paymentProcess'
     ];
 
     public function product()
     {
         return $this->hasOne(Product::class, 'id', 'product_id');
+    }
+
+    public function paymentProcess()
+    {
+        return $this->hasOne(PaymentProcess::class,'order_id', 'id')
+            ->without('order');
     }
 }

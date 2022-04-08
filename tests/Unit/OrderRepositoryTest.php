@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\BaseRepo\Order\OrderRepository;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -23,5 +24,27 @@ class OrderRepositoryTest extends TestCase
     public function test_get_list_orders()
     {
         $this->assertInstanceOf(Collection::class, $this->order->all());
+    }
+
+    public function test_update_order()
+    {
+        Order::factory(1)->create();
+        $order = $this->order->find(1)->first()->toArray();
+        unset($order['product'], $order['payment_process']);
+        $order['product_id'] = 1;
+        $this->assertEquals(true, $this->order->update($order, $order['id']));
+    }
+
+    public function test_delete_order()
+    {
+        Order::factory(1)->create();
+        $order = $this->order->find(1)->first()->toArray();
+        $this->assertEquals(true, $this->order->delete($order['id']));
+    }
+
+    public function test_find_exception()
+    {
+        $this->expectException(ModelNotFoundException::class);
+        $this->order->find(1000);
     }
 }
