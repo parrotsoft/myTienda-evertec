@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\BaseRepo\Order\OrderRepository;
+use App\Http\Controllers\OrderController;
 use App\Http\Requests\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\Product;
@@ -58,7 +59,7 @@ class OrderControllerTest extends TestCase
         $response->assertRedirect('/orders/checkout/' . $order->id);
     }
 
-    public function test_produc_in_checkout_page()
+    /*public function test_produc_in_checkout_page()
     {
         $order = Order::create([
             '_token' => csrf_token(),
@@ -72,13 +73,25 @@ class OrderControllerTest extends TestCase
         $response = $this->get('/orders/checkout/' . $order->id)
             ->assertOk();
         $response->assertViewHas('order', $order);
-    }
+    }*/
 
     public function test_function_index()
     {
         $responser = $this->get(route('orders.list'));
         $responser->assertOk();
     }
+
+    /*public function test_exception_index()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = $this->createMock(OrderController::class);
+        $mock->expects($this->once())
+            ->method('index')
+            ->willThrowException(new \Exception());
+
+        (new OrderController())->index();
+    }*/
 
     public function test_create_form()
     {
