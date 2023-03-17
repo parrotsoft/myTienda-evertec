@@ -4,6 +4,9 @@
  * @description Basic operations interface for models
  */
 
+// CRUD USers.
+
+
 namespace App\BaseRepo\Base;
 
 interface RepositoryInterface
